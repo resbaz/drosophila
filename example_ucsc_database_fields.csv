@@ -1,0 +1,3 @@
+filename,DB name,description,organism,defaultPos,genome,scientificName,sourceName,taxId
+D_birchii.scafSeq.fill.v1.0.fa,droBir1,2014 (Dbir1),Drosophila birchii,scaffold1:0-1000000,Drosophila birchii,Drosophila birchii,Genomic Basis for Adaptation to Climate Change Project,46829
+D_bunnanda.scafSeq.fill.v1.3.fa.gz,droBun1,2014 (Dbun1),Drosophila bunnanda,scaffold1:0-1000000,Drosophila bunnanda,Drosophila bunnanda,Genomic Basis for Adaptation to Climate Change Project,244254
