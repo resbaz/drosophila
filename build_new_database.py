@@ -7,7 +7,7 @@ import csv
 import sys
 
 # setting up the MySQL connection
-#db = MySQL.connect(host="localhost", user="ubuntu", password="browser", db="dbDb")
+#db = MySQL.connect(host="localhost", user="ubuntu", password="browser", db="hgcentral")
 #curr = db.cursor()
 
 # getting the data from the csv
@@ -21,21 +21,25 @@ def add_to_database(row):
           the GB email list member Steve revealed that hgPbOk was deprecated
           and should always be 0 
     '''
-    sql_insert = dict(fn = row[0], 
-    name = row[1],
-    desc = row[2], 
-    nib = "/gbdb/%s" % row[1],
-    organism = row[3],
-    defaultPos = row[4],
-    active = 1, # we presume uploaded data is wanted data.
-    orderKey = rownum,
-    genome = row[5],
-    scientificName = row[6], 
-    htmlPath = "/gbdb/%s/html/description.html" % row[1],
-    hgNearOk = 0,
-    hgPbOk = 0,
-    sourceName = row[7],
-    taxId = row[8])
+    name = row[1] 
+    desc = row[2]  
+    nib = "/gbdb/%s" % row[1] 
+    organism = row[3] 
+    defaultPos = row[4] 
+    active = 1  # we presume uploaded data is wanted data.
+    orderKey = rownum 
+    genome = row[5] 
+    scientificName = row[6]  
+    htmlPath = "/gbdb/%s/html/description.html" % row[1] 
+    hgNearOk = 0 
+    hgPbOk = 0 
+    sourceName = row[7] 
+    taxId = row[8] 
+    
+    sql_insert = "INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" %(name, desc, nib, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId)
+
+
+
     return sql_insert
 
 
@@ -56,10 +60,11 @@ try:
         if rownum == 0:
             header = row
         else:
-            print row
+            filename = row[0]
             sql_insert = add_to_database(row)
-            print sql_insert['name'], sql_insert['taxId'], sql_insert['htmlPath']
+            print ""
             print sql_insert
+            print ""
         rownum += 1
         
 
