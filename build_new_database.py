@@ -8,7 +8,7 @@ import sys
 
 
 # getting the data from the csv
-def add_to_database(row):
+def add_to_database(row, rownum):
     '''
     Here we extract the information and put it into the database
         - the file should have everything that we need but don't have
@@ -19,7 +19,7 @@ def add_to_database(row):
           and should always be 0 
     '''
     name = row[1] 
-    desc = row[2]  
+    desc = MySQLdb.escape_string(row[2])  
     nib = "/gbdb/%s" % row[1] 
     organism = row[3] 
     defaultPos = row[4] 
@@ -61,7 +61,7 @@ try:
             header = row
         else:
             filename = row[0]
-            sql_insert = add_to_database(row)
+            sql_insert = add_to_database(row, rownum)
             dbcursor.execute(sql_insert)                
 
         rownum += 1
