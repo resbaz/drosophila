@@ -6,9 +6,6 @@ import os
 import csv
 import sys
 
-# setting up the MySQL connection
-#db = MySQL.connect(host="localhost", user="ubuntu", password="browser", db="hgcentral")
-#curr = db.cursor()
 
 # getting the data from the csv
 def add_to_database(row):
@@ -38,9 +35,8 @@ def add_to_database(row):
     
     sql_insert = "INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" %(name, desc, nib, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId)
 
-
-
     return sql_insert
+
 
 
 if len(sys.argv) != 2:
@@ -52,6 +48,10 @@ if not os.path.isfile(sys.argv[1]):
     print "usage: build_new_database.py <filename>"
     sys.exit()
 
+# setting up the MySQL connection
+db = MySQLdb.connect(host="localhost", user="root", passwd="browser", db="hgcentral")
+dbcursor = db.cursor()
+
 f = open(sys.argv[1], 'rb')
 try:
     reader = csv.reader(f)
@@ -62,9 +62,8 @@ try:
         else:
             filename = row[0]
             sql_insert = add_to_database(row)
-            print ""
-            print sql_insert
-            print ""
+            dbcursor.execute(sql_insert)                
+
         rownum += 1
         
 
