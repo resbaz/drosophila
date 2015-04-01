@@ -18,8 +18,9 @@ def add_to_database(row, rownum):
           the GB email list member Steve revealed that hgPbOk was deprecated
           and should always be 0 
     '''
-    name = row[1] 
-    desc = MySQLdb.escape_string(row[2])  
+    '''
+    name =  str(MySQLdb.escape_string(row[1]))
+    desc = str(MySQLdb.escape_string(row[2]))  
     nib = "/gbdb/%s" % row[1] 
     organism = row[3] 
     defaultPos = row[4] 
@@ -32,8 +33,11 @@ def add_to_database(row, rownum):
     hgPbOk = 0 
     sourceName = row[7] 
     taxId = row[8] 
-    
     sql_insert = "INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" %(name, desc, nib, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId)
+    '''
+    sql_dict : { name :  MySQLdb.escape_string(row[1]), desc : MySQLdb.escape_string(row[2]), nib : "/gbdb/%s" % row[1], organism : row[3], defaultPos : row[4], active : 1, orderKey : rownum, genome : row[5], scientificName : row[6], htmlPath : "/gbdb/%s/html/description.html" % row[1], hgNearOk : 0, hgPbOk : 0, sourceName : row[7], taxId : row[8] }
+	
+    sql_insert = "INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) %s" %sql_dict)
 
     return sql_insert
 
@@ -62,7 +66,10 @@ try:
         else:
             filename = row[0]
             sql_insert = add_to_database(row, rownum)
-            dbcursor.execute(sql_insert)                
+            print "\n"
+  	    print sql_insert
+            print "\n"
+	    dbcursor.execute(sql_insert)                
 
         rownum += 1
         
