@@ -35,11 +35,14 @@ def add_to_database(row, rownum):
     taxId = row[8] 
     sql_insert = "INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" %(name, desc, nib, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId)
     '''
-    sql_dict : { name :  MySQLdb.escape_string(row[1]), desc : MySQLdb.escape_string(row[2]), nib : "/gbdb/%s" % row[1], organism : row[3], defaultPos : row[4], active : 1, orderKey : rownum, genome : row[5], scientificName : row[6], htmlPath : "/gbdb/%s/html/description.html" % row[1], hgNearOk : 0, hgPbOk : 0, sourceName : row[7], taxId : row[8] }
+    sql_dict = { "name": "%s" % row[1], "desc": "%s" % row[2], "nib": "/gbdb/%s" % row[1], "organism": "%s" % row[3], "defaultPos": "%s" % row[4], "active": 1, "orderKey": rownum, "genome": "%s" % row[5], "scientificName": "%s" % row[6], "htmlPath": "/gbdb/%s/html/description.html" % row[1], "hgNearOk": 0, "hgPbOk": 0, "sourceName": "%s" % row[7], "taxId": "%s" % row[8] }
 	
-    sql_insert = "INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) %s" %sql_dict)
+    #sql_insert = "INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%(name)s, %(desc)s, %(nib)s, %(organism)s, %(defaultPos)s, %(active)s, %(orderKey)s, %(genome)s, %(scientificName)s, %(htmlPath)s, %(hgNearOk)s, %(hgPbOk)s, %(sourceName)s, %(taxId)s)", sql_dict)
+    
+    #print sql_insert
 
-    return sql_insert
+    return
+    #return sql_insert
 
 
 
@@ -64,12 +67,13 @@ try:
         if rownum == 0:
             header = row
         else:
-            filename = row[0]
-            sql_insert = add_to_database(row, rownum)
-            print "\n"
-  	    print sql_insert
-            print "\n"
-	    dbcursor.execute(sql_insert)                
+            #filename = row[0]
+            sql_dict = { "name": "%s" % row[1], "desc": "%s" % row[2], "nib": "/gbdb/%s" % row[1], "organism": "%s" % row[3], "defaultPos": "%s" % row[4], "active": 1, "orderKey": rownum, "genome": "%s" % row[5], "scientificName": "%s" % row[6], "htmlPath": "/gbdb/%s/html/description.html" % row[1], "hgNearOk": 0, "hgPbOk": 0, "sourceName": "%s" % row[7], "taxId": "%s" % row[8] }
+	
+            dbcursor.execute("""INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%(name)s, %(desc)s, %(nib)s, %(organism)s, %(defaultPos)s, %(active)s, %(orderKey)s, %(genome)s, %(scientificName)s, %(htmlPath)s, %(hgNearOk)s, %(hgPbOk)s, %(sourceName)s, %(taxId)s)""", sql_dict)
+    
+            #sql_insert = add_to_database(row, rownum)
+	    #dbcursor.execute(sql_insert)                
 
         rownum += 1
         
