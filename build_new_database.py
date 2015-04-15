@@ -6,46 +6,6 @@ import os
 import csv
 import sys
 
-
-# getting the data from the csv
-def add_to_database(row, rownum):
-    '''
-    Here we extract the information and put it into the database
-        - the file should have everything that we need but don't have
-        - Dr Pip Griffen and Lachlan decided that in our instance we didn't
-          need Gene Sorter, so hgNearOk can be 0, dbDb.orderKey and 
-          genomeClade.priority could just be incremental, correspondence with
-          the GB email list member Steve revealed that hgPbOk was deprecated
-          and should always be 0 
-    '''
-    '''
-    name =  str(MySQLdb.escape_string(row[1]))
-    desc = str(MySQLdb.escape_string(row[2]))  
-    nib = "/gbdb/%s" % row[1] 
-    organism = row[3] 
-    defaultPos = row[4] 
-    active = 1  # we presume uploaded data is wanted data.
-    orderKey = rownum 
-    genome = row[5] 
-    scientificName = row[6]  
-    htmlPath = "/gbdb/%s/html/description.html" % row[1] 
-    hgNearOk = 0 
-    hgPbOk = 0 
-    sourceName = row[7] 
-    taxId = row[8] 
-    sql_insert = "INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" %(name, desc, nib, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId)
-    '''
-    sql_dict = { "name": "%s" % row[1], "desc": "%s" % row[2], "nib": "/gbdb/%s" % row[1], "organism": "%s" % row[3], "defaultPos": "%s" % row[4], "active": 1, "orderKey": rownum, "genome": "%s" % row[5], "scientificName": "%s" % row[6], "htmlPath": "/gbdb/%s/html/description.html" % row[1], "hgNearOk": 0, "hgPbOk": 0, "sourceName": "%s" % row[7], "taxId": "%s" % row[8] }
-	
-    #sql_insert = "INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%(name)s, %(desc)s, %(nib)s, %(organism)s, %(defaultPos)s, %(active)s, %(orderKey)s, %(genome)s, %(scientificName)s, %(htmlPath)s, %(hgNearOk)s, %(hgPbOk)s, %(sourceName)s, %(taxId)s)", sql_dict)
-    
-    #print sql_insert
-
-    return
-    #return sql_insert
-
-
-
 if len(sys.argv) != 2:
     print "usage: build_new_database.py <filename>"
     sys.exit()
@@ -72,9 +32,6 @@ try:
 	
             dbcursor.execute("""INSERT INTO dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (%(name)s, %(desc)s, %(nib)s, %(organism)s, %(defaultPos)s, %(active)s, %(orderKey)s, %(genome)s, %(scientificName)s, %(htmlPath)s, %(hgNearOk)s, %(hgPbOk)s, %(sourceName)s, %(taxId)s)""", sql_dict)
     
-            #sql_insert = add_to_database(row, rownum)
-	    #dbcursor.execute(sql_insert)                
-
         rownum += 1
         
 
